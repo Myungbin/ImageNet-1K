@@ -11,14 +11,16 @@
 import logging
 import math
 from functools import partial
-from typing import Sequence, Tuple, Union, Callable
+from typing import Callable, Sequence, Tuple, Union
 
 import torch
 import torch.nn as nn
 import torch.utils.checkpoint
 from torch.nn.init import trunc_normal_
 
-from .layers import Mlp, PatchEmbed, SwiGLUFFNFused, MemEffAttention, NestedTensorBlock as Block
+from .layers import MemEffAttention, Mlp
+from .layers import NestedTensorBlock as Block
+from .layers import PatchEmbed, SwiGLUFFNFused
 
 logger = logging.getLogger("dinov2")
 

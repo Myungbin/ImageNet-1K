@@ -22,7 +22,7 @@ class Config:
     # train
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
     NUM_WORKERS = torch.cuda.device_count() * 4
-    BATCH_SIZE = 16
+    BATCH_SIZE = 32
     EPOCHS = 100
     SEED = 42
     SHUFFLE = True

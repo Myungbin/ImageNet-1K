@@ -8,11 +8,10 @@
 #   https://github.com/facebookresearch/dino/blob/master/vision_transformer.py
 #   https://github.com/rwightman/pytorch-image-models/tree/master/timm/models/vision_transformer.py
 
-from torch import Tensor
-from torch import nn
+from torch import Tensor, nn
 
 try:
-    from xformers.ops import memory_efficient_attention, unbind, fmha
+    from xformers.ops import fmha, memory_efficient_attention, unbind
 
     XFORMERS_AVAILABLE = True
 except ImportError:
@@ -21,18 +20,18 @@ except ImportError:
 
 class Attention(nn.Module):
     def __init__(
-            self,
-            dim: int,
-            num_heads: int = 8,
-            qkv_bias: bool = False,
-            proj_bias: bool = True,
-            attn_drop: float = 0.0,
-            proj_drop: float = 0.0,
+        self,
+        dim: int,
+        num_heads: int = 8,
+        qkv_bias: bool = False,
+        proj_bias: bool = True,
+        attn_drop: float = 0.0,
+        proj_drop: float = 0.0,
     ) -> None:
         super().__init__()
         self.num_heads = num_heads
         head_dim = dim // num_heads
-        self.scale = head_dim ** -0.5
+        self.scale = head_dim**-0.5
 
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop)

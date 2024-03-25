@@ -8,10 +8,10 @@
 #   https://github.com/facebookresearch/dino/blob/master/vision_transformer.py
 #   https://github.com/rwightman/pytorch-image-models/tree/master/timm/layers/patch_embed.py
 
-from typing import Callable, List, Any, Tuple, Dict
+from typing import Any, Callable, Dict, List, Tuple
 
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 from .attention import Attention, MemEffAttention
 from .drop_path import DropPath
@@ -19,8 +19,7 @@ from .layer_scale import LayerScale
 from .mlp import Mlp
 
 try:
-    from xformers.ops import fmha
-    from xformers.ops import scaled_index_add, index_select_cat
+    from xformers.ops import fmha, index_select_cat, scaled_index_add
 
     XFORMERS_AVAILABLE = True
 except ImportError:
@@ -29,21 +28,21 @@ except ImportError:
 
 class Block(nn.Module):
     def __init__(
-            self,
-            dim: int,
-            num_heads: int,
-            mlp_ratio: float = 4.0,
-            qkv_bias: bool = False,
-            proj_bias: bool = True,
-            ffn_bias: bool = True,
-            drop: float = 0.0,
-            attn_drop: float = 0.0,
-            init_values=None,
-            drop_path: float = 0.0,
-            act_layer: Callable[..., nn.Module] = nn.GELU,
-            norm_layer: Callable[..., nn.Module] = nn.LayerNorm,
-            attn_class: Callable[..., nn.Module] = Attention,
-            ffn_layer: Callable[..., nn.Module] = Mlp,
+        self,
+        dim: int,
+        num_heads: int,
+        mlp_ratio: float = 4.0,
+        qkv_bias: bool = False,
+        proj_bias: bool = True,
+        ffn_bias: bool = True,
+        drop: float = 0.0,
+        attn_drop: float = 0.0,
+        init_values=None,
+        drop_path: float = 0.0,
+        act_layer: Callable[..., nn.Module] = nn.GELU,
+        norm_layer: Callable[..., nn.Module] = nn.LayerNorm,
+        attn_class: Callable[..., nn.Module] = Attention,
+        ffn_layer: Callable[..., nn.Module] = Mlp,
     ) -> None:
         super().__init__()
         # print(f"biases: qkv: {qkv_bias}, proj: {proj_bias}, ffn: {ffn_bias}")
@@ -102,9 +101,9 @@ class Block(nn.Module):
 
 
 def drop_add_residual_stochastic_depth(
-        x: Tensor,
-        residual_func: Callable[[Tensor], Tensor],
-        sample_drop_ratio: float = 0.0,
+    x: Tensor,
+    residual_func: Callable[[Tensor], Tensor],
+    sample_drop_ratio: float = 0.0,
 ) -> Tensor:
     # 1) extract subset using permutation
     b, n, d = x.shape
@@ -173,10 +172,10 @@ def get_attn_bias_and_cat(x_list, branges=None):
 
 
 def drop_add_residual_stochastic_depth_list(
-        x_list: List[Tensor],
-        residual_func: Callable[[Tensor, Any], Tensor],
-        sample_drop_ratio: float = 0.0,
-        scaling_vector=None,
+    x_list: List[Tensor],
+    residual_func: Callable[[Tensor, Any], Tensor],
+    sample_drop_ratio: float = 0.0,
+    scaling_vector=None,
 ) -> Tensor:
     # 1) generate random set of indices for dropping samples in the batch
     branges_scales = [get_branges_scales(x, sample_drop_ratio=sample_drop_ratio) for x in x_list]

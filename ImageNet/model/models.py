@@ -2,13 +2,12 @@ import torch
 import torch.nn as nn
 from ImageNet.model.vision_transformer import ViT
 
-vit = ViT()
-
 
 class VisionTransformer(nn.Module):
-    def __init__(self, num_classes, model="vit_base"):
+    def __init__(self, num_classes, model="vit_large"):
+        vision_transformer = ViT()
         super(VisionTransformer, self).__init__()
-        self.backbone = getattr(vit, model)(patch_size=14)
+        self.backbone = getattr(vision_transformer, model)(patch_size=14)
         self.classifier = nn.Linear(self.backbone.embed_dim, num_classes)
 
     def forward(self, x):
