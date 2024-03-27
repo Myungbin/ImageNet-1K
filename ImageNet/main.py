@@ -9,7 +9,7 @@ from ImageNet.config.config import CFG
 from ImageNet.data.dataloader import DatasetLoader
 from ImageNet.model.models import VisionTransformer
 from ImageNet.train.trainer import Trainer
-from ImageNet.train.logging import set_logging
+from ImageNet.utils.logging import set_logging
 
 warnings.filterwarnings(action="ignore")
 

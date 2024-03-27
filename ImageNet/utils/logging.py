@@ -9,11 +9,13 @@ from ImageNet.config.config import CFG
 
 
 def set_logging(file_name="main"):
+    project_name = str(CFG.ROOT_PATH).split("/")[-1]
+    
     if not os.path.exists(CFG.LOG_DIR):
         os.makedirs(CFG.LOG_DIR)
-
+    
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file_name = f"Luxury_{file_name}_{current_time}.log"
+    log_file_name = f"{project_name}_{file_name}_{current_time}.log"
     log_file_path = os.path.join(CFG.LOG_DIR, log_file_name)
 
     logging.basicConfig(

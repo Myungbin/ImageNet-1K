@@ -6,7 +6,8 @@ from tqdm import tqdm
 
 from ImageNet.config.config import CFG
 from ImageNet.utils.utils import save_model
-from ImageNet.train.logging import train_log
+from ImageNet.utils.logging import train_log
+
 
 class Trainer:
     def __init__(self, model, criterion, optimizer, scheduler, scaler=None, logger=None, patience=5, delta=0.001):
