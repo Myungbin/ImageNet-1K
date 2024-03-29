@@ -33,4 +33,4 @@ CFG = Config()
 
 
 if __name__ == "__main__":
-    print(str(CFG.ROOT_PATH).split("/")[-1])
+    print(CFG.DEVICE)

@@ -31,5 +31,18 @@ def load_model_state_dict(model, file_name):
     return model
 
 
-if __name__ == "__main__":
-    print(CFG.SAVE_MODEL_PATH)
+def model_info(model):
+    """Model information."""
+    num_params = get_num_params(model)  # number of parameters
+    num_gradients = get_num_gradients(model)  # number of gradients
+    num_layer = len(list(model.modules()))  # number of layers
+    return num_params, num_gradients, num_layer
+
+
+def get_num_params(model):
+    return sum(x.numel() for x in model.parameters())
+
+
+def get_num_gradients(model):
+    return sum(x.numel() for x in model.parameters() if x.requires_grad)
+
