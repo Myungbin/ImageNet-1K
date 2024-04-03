@@ -25,3 +25,4 @@ if __name__ == "__main__":
     scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2, eta_min=0, verbose=True)
     trainer = Trainer(model, criterion, optimizer, scheduler, scaler, True)
     trainer.fit(train_loader, val_loader)
+    ...
